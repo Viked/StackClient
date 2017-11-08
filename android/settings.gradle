@@ -1,0 +1,3 @@
+rootProject.name = 'StackClient'
+
+include ':app'

@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, ListView, ActivityIndicator } from 'react-native'
 
 export default class Screen2 extends React.Component {
   static navigationOptions = {
@@ -12,12 +12,47 @@ export default class Screen2 extends React.Component {
     )
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true
+    }
+  }
+
+  componentDidMount() {
+      return fetch('https://api.stackexchange.com/2.2/search/advanced?pagesize=100&order=desc&sort=activity&tagged=react-native&site=stackoverflow')
+        .then((response) => response.json())
+        .then((responseJson) => {
+          let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+          this.setState({
+            isLoading: false,
+            dataSource: ds.cloneWithRows(responseJson.items),
+          }, function() {
+            // do something with new state
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      }
+
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Screen2</Text>
-      </View>
-    )
+    if (this.state.isLoading) {
+     return (
+       <View style={{flex: 1, paddingTop: 20}}>
+         <ActivityIndicator />
+       </View>
+     );
+   }
+
+   return (
+     <View style={{flex: 1, paddingTop: 20}}>
+       <ListView
+         dataSource={this.state.dataSource}
+         renderRow={(rowData) => <Text style={styles.row}>{rowData.title}</Text>}
+       />
+     </View>
+   );
   }
 }
 
@@ -28,4 +63,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  row:{
+    padding: 5
+  }
 })

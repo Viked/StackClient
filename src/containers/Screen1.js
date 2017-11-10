@@ -1,7 +1,8 @@
 import React from 'react'
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, AsyncStorage } from 'react-native'
 
 export default class Screen1 extends React.Component {
+
   static navigationOptions = {
     drawerLabel: 'Screen One',
     drawerIcon: () => (
@@ -12,10 +13,23 @@ export default class Screen1 extends React.Component {
     )
   }
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: ""
+    };
+  }
+
+  componentDidMount() {
+        AsyncStorage.getItem("name").then((value) => {
+            this.setState({"name": value});
+        }).done();
+    }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>Screen 1</Text>
+        <Text>Hello, {this.state.name}</Text>
       </View>
     )
   }

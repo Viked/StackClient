@@ -1,85 +1,7 @@
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome'
-import { StyleSheet, Text, View, TextInput, AsyncStorage, Alert } from 'react-native'
-
-export default class LoginScreen extends React.Component {
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      name: "",
-      password: ""
-    };
-  }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={marginBottom = 50}>Welcome</Text>
-        <View style={styles.passwordContainer}>
-           <Icon name='user' size={20}/>
-          <TextInput
-                  style={styles.inputStyle}
-                  value={this.state.name}
-                  placeholder="Login"
-                  onChangeText={(text) => this.onNameEntry(text)}
-                  />
-
-
-        </View>
-
-
-        <View style={styles.passwordContainer}>
-          <Icon name='lock' size={20}/>
-              <TextInput
-                style={styles.inputStyle}
-                autoCorrect={false}
-                secureTextEntry
-                placeholder="Password"
-                value={this.state.password}
-                onChangeText={(text) => this.onPasswordEntry(text)}
-              />
-
-           </View>
-
-        <Text
-          style={styles.linky}
-          onPress={() => this.onLogin()} >
-          Log in
-        </Text>
-      </View>
-    )
-  }
-
-  componentDidMount() {
-        AsyncStorage.getItem("name").then((value) => {
-            this.setState({"name": value});
-        }).done();
-    }
-
-  onNameEntry(value) {
-        this.setState({"name": value});
-    }
-
-    onPasswordEntry(value) {
-          this.setState({"password": value});
-      }
-
-      onLogin(){
-        var name = this.state.name;
-        var password = this.state.password;
-
-        if(name != "" && password != "" && password != name){
-          AsyncStorage.setItem("name", name);
-          this.props.navigation.navigate('drawerStack')
-        } else {
-          Alert.alert(
-            'Error',
-            'Login or password is not valid',
-            { cancelable: true })
-        }
-      }
-}
+import { connect } from 'react-redux';
+import { StyleSheet, Text, View, TextInput, Alert } from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -109,3 +31,60 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 })
+
+class LoginScreen extends React.Component {
+  state = {
+    name: "",
+    password: ""
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={marginBottom = 50}>Welcome</Text>
+        <View style={styles.passwordContainer}>
+          <Icon name='user' size={20} />
+          <TextInput
+            style={styles.inputStyle}
+            value={this.state.name}
+            placeholder="Login"
+            onChangeText={(text) => this.setState({ "name": text })}
+          />
+        </View>
+        <View style={styles.passwordContainer}>
+          <Icon name='lock' size={20} />
+          <TextInput
+            style={styles.inputStyle}
+            autoCorrect={false}
+            secureTextEntry
+            placeholder="Password"
+            value={this.state.password}
+            onChangeText={(text) => this.setState({ "password": text })}
+          />
+        </View>
+
+        <Text
+          style={styles.linky}
+          onPress={() => this.onLogin()} >
+          Log in
+        </Text>
+      </View>
+    )
+  }
+
+  onLogin() {
+    const name = this.state.name;
+    const password = this.state.password;
+
+    if (name != "" && password != "" && password != name) {
+      this.props.dispatch({ type: 'Login', userName: name })
+    } else {
+      Alert.alert(
+        'Error',
+        'Login or password is not valid',
+        { cancelable: true })
+    }
+  }
+}
+
+export default connect()(LoginScreen);

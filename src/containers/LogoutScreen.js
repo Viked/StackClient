@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native'
+import { StyleSheet, Text, View, Button } from 'react-native'
 import { connect } from 'react-redux';
 
 const styles = StyleSheet.create({
@@ -10,16 +10,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 30,
     marginBottom: 50,
-
-  },
-  logout: {
-    fontWeight: 'bold',
-    padding: 15,
-    borderRadius: 2,
-    borderWidth: 1,
-    textAlign: 'center'
   }
 })
 
@@ -28,15 +20,12 @@ const LogoutScreen = ({ logout }) => (
 
     <Text
       style={styles.title}>
-      Good Bye
+      Goodbye
   </Text>
 
-    <TouchableHighlight onPress={logout}>
-      <Text
-        style={styles.logout}>
-        Log Out
-    </Text>
-    </TouchableHighlight>
+    <Button
+      onPress={logout}
+      title="Log Out" />
 
   </View>
 );

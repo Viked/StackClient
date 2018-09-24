@@ -9,11 +9,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  title: {
+    fontSize: 40,
+  }
 })
 
 const HomeScreen = ({ userName }) => (
   <View style={styles.container}>
-    <Text>Hello, {userName}</Text>
+    <Text style={styles.title}>Hello, {userName}!</Text>
   </View>
 );
 

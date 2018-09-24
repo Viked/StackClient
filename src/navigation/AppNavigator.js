@@ -9,7 +9,7 @@ import {
 
 import LoginScreen from '../containers/LoginScreen'
 import HomeScreen from '../containers/HomeScreen'
-import Screen2 from '../containers/Screen2'
+import StackoverflowScreen from '../containers/StackoverflowScreen'
 import LogoutScreen from '../containers/LogoutScreen'
 
 const middleware = createReactNavigationReduxMiddleware(
@@ -34,10 +34,10 @@ const homeScreenStack = createStackNavigator(
     }
 );
 
-const secondScreenStack = createStackNavigator(
+const stackoverflowScreenStack = createStackNavigator(
     {
-        SecondScreen: {
-            screen: Screen2,
+        StackoverflowScreen: {
+            screen: StackoverflowScreen,
         }
     },
     {
@@ -71,8 +71,8 @@ const DrawerNavigator = createDrawerNavigator({
             drawerLabel: 'Home',
         },
     },
-    SecondScreen: {
-        screen: secondScreenStack,
+    StackoverflowScreen: {
+        screen: stackoverflowScreenStack,
         navigationOptions: {
             drawerLabel: 'Stackoverflow',
         },
